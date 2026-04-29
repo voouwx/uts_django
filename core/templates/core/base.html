@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Reno ArD S{% endblock %}</title>
+  
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  
+  {% block extra_css %}{% endblock %}
+
+  <style>
+    /* Structural styles not in style.css */
+    .cursor-ripple {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9997;
+      transform: translate(-50%, -50%) scale(0);
+      background: radial-gradient(circle, rgba(255,255,255,0.32) 0%, rgba(15,168,152,0.10) 55%, transparent 72%);
+      animation: ripple-out 0.85s ease-out forwards;
+    }
+    @keyframes ripple-out {
+      0%   { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fluid Wave Canvas -->
+  <canvas id="wave-canvas"></canvas>
+
+  <!-- Cursor trailing dot -->
+  <div id="cursor-dot"></div>
+
+  <!-- Main Content -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <script src="{% static 'js/script.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+
+  <script>
+    /* ══════════════════════════════════════════════
+       FLUID TSUNAMI WAVE BACKGROUND
+       Uses multi-layer sine wave simulation with
+       cursor distortion for a water-ripple feel.
+    ══════════════════════════════════════════════ */
+
+    (function () {
+      const canvas = document.getElementById('wave-canvas');
+      const ctx = canvas.getContext('2d');
+
+      let W, H;
+      let mouse = { x: -1000, y: -1000, vx: 0, vy: 0, px: -1000, py: -1000 };
+      let t = 0;
+
+      // Distortion points from mouse movement
+      const distortions = [];
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      /* ── Mouse tracking ── */
+      document.addEventListener('mousemove', (e) => {
+        mouse.vx = e.clientX - mouse.px;
+        mouse.vy = e.clientY - mouse.py;
+        mouse.px = mouse.x;
+        mouse.py = mouse.y;
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+
+        // Add distortion on fast movement
+        const speed = Math.sqrt(mouse.vx ** 2 + mouse.vy ** 2);
+        if (speed > 3) {
+          distortions.push({
+            x: e.clientX,
+            y: e.clientY,
+            r: 0,
+            maxR: Math.min(speed * 8, 120),
+            strength: Math.min(speed * 0.4, 18),
+            life: 1
+          });
+        }
+
+        // Move cursor dot
+        const dot = document.getElementById('cursor-dot');
+        dot.style.left = e.clientX + 'px';
+        dot.style.top = e.clientY + 'px';
+      });
+
+      /* ── Click ripple ── */
+      document.addEventListener('click', (e) => {
+        const el = document.createElement('div');
+        el.className = 'cursor-ripple';
+        el.style.left = e.clientX + 'px';
+        el.style.top = e.clientY + 'px';
+        const size = 180 + Math.random() * 80;
+        el.style.width = size + 'px';
+        el.style.height = size + 'px';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 900);
+
+        distortions.push({
+          x: e.clientX, y: e.clientY,
+          r: 0, maxR: 200,
+          strength: 30, life: 1
+        });
+      });
+
+      /* ── Wave layers config ── */
+      const layers = [
+        { amp: 0.038, freq: 0.0018, speed: 0.007, phase: 0,    alpha: 0.22, yFactor: 0.42 },
+        { amp: 0.055, freq: 0.0014, speed: 0.005, phase: 2.1,  alpha: 0.18, yFactor: 0.52 },
+        { amp: 0.030, freq: 0.0022, speed: 0.009, phase: 4.5,  alpha: 0.15, yFactor: 0.60 },
+        { amp: 0.025, freq: 0.0010, speed: 0.004, phase: 1.2,  alpha: 0.20, yFactor: 0.70 },
+        { amp: 0.045, freq: 0.0016, speed: 0.006, phase: 3.3,  alpha: 0.12, yFactor: 0.80 },
+      ];
+
+      /* ── Colour palette – teal/cyan/green gradient matching screenshot ── */
+      const bgColors = [
+        { stop: 0.00, color: [0,   178, 200] },
+        { stop: 0.40, color: [15,  180, 170] },
+        { stop: 0.70, color: [80,  195, 170] },
+        { stop: 1.00, color: [168, 220, 170] },
+      ];
+
+      function lerp(a, b, t) { return a + (b - a) * t; }
+
+      function getBgColor(yRatio) {
+        for (let i = 0; i < bgColors.length - 1; i++) {
+          const c0 = bgColors[i], c1 = bgColors[i + 1];
+          if (yRatio >= c0.stop && yRatio <= c1.stop) {
+            const f = (yRatio - c0.stop) / (c1.stop - c0.stop);
+            return [
+              lerp(c0.color[0], c1.color[0], f),
+              lerp(c0.color[1], c1.color[1], f),
+              lerp(c0.color[2], c1.color[2], f)
+            ];
+          }
+        }
+        return bgColors[bgColors.length - 1].color;
+      }
+
+      function getDistortionAt(x, y) {
+        let dx = 0, dy = 0;
+        for (const d of distortions) {
+          const dist = Math.sqrt((x - d.x) ** 2 + (y - d.y) ** 2);
+          if (dist < d.r + 60 && dist > 0) {
+            const influence = Math.max(0, 1 - dist / (d.r + 60));
+            const angle = Math.atan2(y - d.y, x - d.x);
+            const wave = Math.sin((dist / d.r) * Math.PI) * d.strength * d.life;
+            dx += Math.cos(angle) * wave * influence;
+            dy += Math.sin(angle) * wave * influence;
+          }
+        }
+
+        // Continuous cursor proximity ripple
+        const cdist = Math.sqrt((x - mouse.x) ** 2 + (y - mouse.y) ** 2);
+        if (cdist < 180) {
+          const influence = (1 - cdist / 180) ** 2;
+          const speed = Math.sqrt(mouse.vx ** 2 + mouse.vy ** 2);
+          dy += Math.sin(cdist * 0.04 - t * 3) * influence * Math.min(speed * 0.5, 10);
+        }
+
+        return { dx, dy };
+      }
+
+      /* ── Render ── */
+      function draw() {
+        t += 0.016;
+
+        // Update distortions
+        for (let i = distortions.length - 1; i >= 0; i--) {
+          const d = distortions[i];
+          d.r += d.maxR * 0.04;
+          d.life -= 0.025;
+          if (d.life <= 0 || d.r >= d.maxR) distortions.splice(i, 1);
+        }
+
+        // Background gradient
+        const grad = ctx.createLinearGradient(0, 0, 0, H);
+        bgColors.forEach(c => {
+          grad.addColorStop(c.stop, `rgb(${c.color[0]},${c.color[1]},${c.color[2]})`);
+        });
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, W, H);
+
+        // Draw each wave layer
+        layers.forEach((layer, li) => {
+          ctx.beginPath();
+
+          const baseY = H * layer.yFactor;
+          const amplitude = H * layer.amp;
+
+          // Sample points
+          const steps = Math.ceil(W / 4);
+          const pts = [];
+          for (let i = 0; i <= steps; i++) {
+            const x = (i / steps) * W;
+            const rawY = baseY
+              + Math.sin(x * layer.freq + t * layer.speed * 60 + layer.phase) * amplitude
+              + Math.sin(x * layer.freq * 1.7 + t * layer.speed * 40 + layer.phase * 1.5) * amplitude * 0.4
+              + Math.sin(x * layer.freq * 0.5 + t * layer.speed * 20) * amplitude * 0.6;
+
+            const { dy } = getDistortionAt(x, rawY);
+            pts.push({ x, y: rawY + dy });
+          }
+
+          // Smooth curve
+          ctx.moveTo(0, H);
+          ctx.lineTo(pts[0].x, pts[0].y);
+          for (let i = 1; i < pts.length - 1; i++) {
+            const mx = (pts[i].x + pts[i + 1].x) / 2;
+            const my = (pts[i].y + pts[i + 1].y) / 2;
+            ctx.quadraticCurveTo(pts[i].x, pts[i].y, mx, my);
+          }
+          ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y);
+          ctx.lineTo(W, H);
+          ctx.closePath();
+
+          // Wave color – lighter/whiter toward bottom
+          const [r, g, b] = getBgColor(layer.yFactor);
+          const bright = li % 2 === 0 ? 25 : -10;
+          ctx.fillStyle = `rgba(${Math.min(255,r+bright)},${Math.min(255,g+bright)},${Math.min(255,b+bright)},${layer.alpha})`;
+          ctx.fill();
+
+          // Wave highlight (top edge shimmer)
+          ctx.strokeStyle = `rgba(255,255,255,${layer.alpha * 0.6})`;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        });
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    })();
+  </script>
+</body>
+</html>
