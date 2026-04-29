@@ -1,101 +1,85 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
-{% block title %}About - Portfolio{% endblock %}
+{% block title %}About — Reno ArD S{% endblock %}
 
 {% block content %}
-<section class="py-20 px-4 bg-gray-50">
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-5xl font-bold text-center mb-12 text-gradient">Tentang Saya</h1>
+<!-- About Section -->
+<section id="about" class="page-section">
+    <div class="section-card">
+        <div class="section-header">
+            <span class="section-label">About</span>
+            <h2 class="section-title">Tentang Saya</h2>
+            <p class="section-sub">Hi, I'm Reno! 👋 Front-end developer berbasis di Indonesia, suka bikin web yang cantik dan interaktif.</p>
+        </div>
         
-        <!-- Profile -->
-        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-            <div class="flex flex-col md:flex-row items-center gap-8">
-                <img src="https://via.placeholder.com/200" alt="Profile" class="w-48 h-48 rounded-full object-cover border-4 border-purple-600">
-                <div class="flex-1 text-center md:text-left">
-                    <h2 class="text-3xl font-bold mb-2">Your Name</h2>
-                    <p class="text-purple-600 mb-4">Web Developer & Designer</p>
-                    <p class="text-gray-600 mb-4">
-                        Saya adalah seorang developer yang passionate dalam membuat aplikasi web yang modern dan user-friendly. 
-                        Dengan pengalaman lebih dari 2 tahun, saya telah menyelesaikan berbagai project menarik.
-                    </p>
-                    <div class="flex gap-4 justify-center md:justify-start">
-                        <a href="#" class="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition">
-                            <i class="fab fa-github mr-2"></i>GitHub
-                        </a>
-                        <a href="#" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition">
-                            <i class="fab fa-linkedin mr-2"></i>LinkedIn
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <div class="about-bio">
+            <p>
+                <strong>Saya adalah seorang front-end web developer</strong> yang passionate dalam menciptakan pengalaman web yang indah dan interaktif. Saya percaya bahwa desain yang baik bukan hanya soal estetika, tapi juga soal fungsi dan pengalaman pengguna.
+            </p>
+            <p>
+                Saat ini saya fokus memperdalam kemampuan di bidang modern web development, mulai dari membangun UI yang responsif hingga mengintegrasikan back-end dengan Django.
+            </p>
         </div>
-
-        <!-- Skills -->
-        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-            <h3 class="text-2xl font-bold mb-6">Skills</h3>
-            <div class="space-y-4">
-                <div>
-                    <div class="flex justify-between mb-1">
-                        <span class="font-semibold">Python / Django</span>
-                        <span class="text-purple-600">90%</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div class="bg-purple-600 h-2 rounded-full" style="width: 90%"></div>
-                    </div>
+        
+        <div class="skill-grid">
+            <div class="skill-card">
+                <div class="skill-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
                 </div>
-                <div>
-                    <div class="flex justify-between mb-1">
-                        <span class="font-semibold">HTML / CSS / Tailwind</span>
-                        <span class="text-purple-600">85%</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div class="bg-purple-600 h-2 rounded-full" style="width: 85%"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-1">
-                        <span class="font-semibold">JavaScript</span>
-                        <span class="text-purple-600">75%</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div class="bg-purple-600 h-2 rounded-full" style="width: 75%"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-1">
-                        <span class="font-semibold">Database (PostgreSQL/MySQL)</span>
-                        <span class="text-purple-600">80%</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div class="bg-purple-600 h-2 rounded-full" style="width: 80%"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Education & Experience -->
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h3 class="text-2xl font-bold mb-6"><i class="fas fa-graduation-cap text-purple-600 mr-2"></i>Education</h3>
-                <div class="space-y-4">
-                    <div class="border-l-4 border-purple-600 pl-4">
-                        <h4 class="font-semibold">S1 Teknik Informatika</h4>
-                        <p class="text-gray-600">Universitas XYZ</p>
-                        <p class="text-sm text-gray-500">2018 - 2022</p>
-                    </div>
-                </div>
+                <h3>HTML & CSS</h3>
+                <p>Semantic HTML5, CSS3, Flexbox, Grid, Animasi, Glassmorphism</p>
             </div>
             
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h3 class="text-2xl font-bold mb-6"><i class="fas fa-briefcase text-purple-600 mr-2"></i>Experience</h3>
-                <div class="space-y-4">
-                    <div class="border-l-4 border-purple-600 pl-4">
-                        <h4 class="font-semibold">Web Developer</h4>
-                        <p class="text-gray-600">Company ABC</p>
-                        <p class="text-sm text-gray-500">2022 - Sekarang</p>
-                    </div>
+            <div class="skill-card">
+                <div class="skill-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
                 </div>
+                <h3>JavaScript</h3>
+                <p>ES6+, DOM Manipulation, Fetch API, animasi interaktif</p>
             </div>
+            
+            <div class="skill-card">
+                <div class="skill-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                </div>
+                <h3>Django</h3>
+                <p>Python, Django Framework, Template Engine, MVT Pattern</p>
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                        <path d="M2 2l7.586 7.586"></path>
+                        <circle cx="11" cy="11" r="2"></circle>
+                    </svg>
+                </div>
+                <h3>Design</h3>
+                <p>Figma, UI/UX Principles, Responsive Design, Glassmorphism</p>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <a href="{% url 'core:home' %}" class="back-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Kembali ke Home
+            </a>
+            <a href="{% url 'core:home' %}#contact" class="about-btn" style="width: auto; padding: 10px 20px;">
+                <span>Hubungi Saya</span>
+            </a>
         </div>
     </div>
 </section>

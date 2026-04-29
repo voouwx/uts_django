@@ -1,153 +1,156 @@
-/* ===================================
-   script.js  –  Reno ArD S Portfolio
-   =================================== */
+/* =====================================================
+RENO ArD S — PORTFOLIO  |  main.js
+File: static/js/main.js
+===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
 
-/* ───────────────────────────────────
-   1. CURSOR RING  (follows mouse with
-      a slight lag for smooth feel)
-─────────────────────────────────── */
-(function initCursorRing() {
-  // Create ring element if it doesn't exist yet
-  if (!document.getElementById('cursor-ring')) {
-    const ring = document.createElement('div');
-    ring.id = 'cursor-ring';
-    document.body.appendChild(ring);
-  }
+/* ─────────────────────────────────────────
+   1. NAVBAR — LIQUID GLASS PILL SLIDER
+───────────────────────────────────────── */
+const navBtns   = document.querySelectorAll(".nav-btn");
+const pill      = document.getElementById("pill");
+const nav       = document.getElementById("nav");
+const glare     = document.getElementById("glare");
+const themeBtn  = document.getElementById("theme-btn");
 
-  let rx = window.innerWidth  / 2;
-  let ry = window.innerHeight / 2;
-  let mx = rx, my = ry;
-  const LERP = 0.14;   // lower = more lag, more fluid
-
-  document.addEventListener('mousemove', (e) => {
-    mx = e.clientX;
-    my = e.clientY;
-  });
-
-  function updateRing() {
-    rx += (mx - rx) * LERP;
-    ry += (my - ry) * LERP;
-
-    const ring = document.getElementById('cursor-ring');
-    if (ring) {
-      ring.style.left = rx + 'px';
-      ring.style.top  = ry + 'px';
+/**
+ * Geser pill ke posisi tombol yang aktif.
+ * smooth=false → tanpa animasi (untuk init & resize)
+ */
+function updatePill(btn, smooth = true) {
+    if (!btn) return;
+    if (!smooth) {
+        pill.style.transition = "none";
+    } else {
+        pill.style.transition =
+             "transform 0.5s cubic-bezier(0.34,1.2,0.64,1), " +
+             "width 0.5s cubic-bezier(0.34,1.2,0.64,1)";
     }
-    requestAnimationFrame(updateRing);
-  }
-  updateRing();
-})();
+    pill.style.width     = btn.offsetWidth + "px";
+    pill.style.transform = "translateX(" + btn.offsetLeft + "px)";
+}
 
+// Set posisi awal tanpa animasi
+const initActive = document.querySelector(".nav-btn.active");
+if (initActive) {
+    setTimeout(() => {
+        updatePill(initActive, false);
+        void pill.offsetWidth; // force reflow
+    }, 60);
+}
 
-/* ───────────────────────────────────
-   2. SMOOTH SCROLL for anchor links
-─────────────────────────────────── */
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+/* ─────────────────────────────────────────
+   2. SMOOTH SCROLL — NAVBAR & TOMBOL
+───────────────────────────────────────── */
+
+/**
+ * Scroll halus ke section berdasarkan id.
+ * Offset 80px supaya tidak tertutup navbar.
+ */
+function scrollToSection(id) {
+    const target = document.getElementById(id);
+    if (!target) return;
+    const offset = 80;
+    const top    = target.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: "smooth" });
+}
+
+/**
+ * Tandai tombol navbar yang sesuai dengan section aktif.
+ */
+function setActiveNavBtn(targetId) {
+    navBtns.forEach(b => {
+        if (b.dataset.target === targetId) {
+            b.classList.add("active");
+            updatePill(b);
+        } else {
+            b.classList.remove("active");
+        }
     });
-  });
+}
+
+// Klik navbar → scroll + update pill
+navBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        const target = btn.dataset.target;
+        setActiveNavBtn(target);
+        scrollToSection(target);
+    });
 });
 
-
-/* ───────────────────────────────────
-   3. CARD 3-D TILT on mouse move
-      Gives the glass card a subtle
-      perspective tilt as you hover.
-─────────────────────────────────── */
-(function initCardTilt() {
-  const MAX_TILT = 8;   // degrees
-
-  document.addEventListener('mousemove', (e) => {
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-      const rect = card.getBoundingClientRect();
-
-      // Only apply tilt when cursor is near the card
-      const margin = 60;
-      if (
-        e.clientX < rect.left - margin || e.clientX > rect.right  + margin ||
-        e.clientY < rect.top  - margin || e.clientY > rect.bottom + margin
-      ) {
-        // Reset tilt when cursor moves away
-        card.style.transform = '';
-        card.classList.remove('tilting');
-        return;
-      }
-
-      const cx = rect.left + rect.width  / 2;
-      const cy = rect.top  + rect.height / 2;
-      const dx = (e.clientX - cx) / (rect.width  / 2);
-      const dy = (e.clientY - cy) / (rect.height / 2);
-
-      const tiltX = -dy * MAX_TILT;
-      const tiltY =  dx * MAX_TILT;
-
-      card.classList.add('tilting');
-      card.style.transform =
-        `perspective(900px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-4px)`;
+// Klik tombol "About Me" (data-scroll="about") & "Kembali ke atas"
+document.querySelectorAll("[data-scroll]").forEach(el => {
+    el.addEventListener("click", () => {
+        const target = el.dataset.scroll;
+        scrollToSection(target);
+        setActiveNavBtn(target);
     });
-  });
+});
 
-  // Reset all cards when cursor leaves the window
-  document.addEventListener('mouseleave', () => {
-    document.querySelectorAll('.card').forEach(card => {
-      card.style.transform = '';
-      card.classList.remove('tilting');
-    });
-  });
-})();
+/* ─────────────────────────────────────────
+   3. INTERSECTION OBSERVER
+      Update pill saat scroll manual
+───────────────────────────────────────── */
+const sections = document.querySelectorAll(".page-section");
 
-
-/* ───────────────────────────────────
-   4. ENTRANCE ANIMATION
-      Cards & sections fade + slide up
-      when they enter the viewport.
-─────────────────────────────────── */
-(function initEntranceAnimation() {
-  const style = document.createElement('style');
-  style.textContent = `
-    .anim-hidden {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
+const observer = new IntersectionObserver(
+    (entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                setActiveNavBtn(entry.target.id);
+            }
+        });
+    },
+    {
+        rootMargin: "-40% 0px -40% 0px", // tengah viewport
+        threshold: 0,
     }
-    .anim-visible {
-      opacity: 1 !important;
-      transform: translateY(0) !important;
+);
+
+sections.forEach(sec => observer.observe(sec));
+
+/* ─────────────────────────────────────────
+   4. DARK / LIGHT MODE TOGGLE
+───────────────────────────────────────── */
+if (themeBtn) {
+    // Simpan preferensi di localStorage
+    const saved = localStorage.getItem("theme");
+    if (saved) {
+        document.documentElement.setAttribute("data-theme", saved);
     }
-  `;
-  document.head.appendChild(style);
 
-  function observe() {
-    const targets = document.querySelectorAll('.card, .about-section, .about-card');
-    if (!targets.length) return;
+    themeBtn.addEventListener("click", () => {
+        const root    = document.documentElement;
+        const isDark  = root.getAttribute("data-theme") === "dark";
+        const newTheme = isDark ? "light" : "dark";
+        root.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
 
-    targets.forEach((el, i) => {
-      el.classList.add('anim-hidden');
-      el.style.transitionDelay = (i * 0.1) + 's';
+        // Update pill setelah transisi font (font-weight bisa geser width)
+        setTimeout(() => {
+            const active = document.querySelector(".nav-btn.active");
+            if (active) updatePill(active);
+        }, 120);
     });
+}
 
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('anim-visible');
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
+/* ─────────────────────────────────────────
+   5. NAVBAR — LIQUID GLARE (cahaya ikut mouse)
+───────────────────────────────────────── */
+if (nav && glare) {
+    nav.addEventListener("mousemove", (e) => {
+        const rect = nav.getBoundingClientRect();
+        glare.style.setProperty("--gx", (e.clientX - rect.left) + "px");
+        glare.style.setProperty("--gy", (e.clientY - rect.top) + "px");
+    });
+}
 
-    targets.forEach(el => io.observe(el));
-  }
+/* ─────────────────────────────────────────
+   6. RESIZE — rekalkulasi posisi pill
+───────────────────────────────────────── */
+window.addEventListener("resize", () => {
+    const active = document.querySelector(".nav-btn.active");
+    if (active) updatePill(active, false);
+});
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', observe);
-  } else {
-    observe();
-  }
-})();
+}); // end DOMContentLoaded
