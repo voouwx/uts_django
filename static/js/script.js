@@ -328,4 +328,209 @@ document.addEventListener("DOMContentLoaded", () => {
     revealObserver.observe(el);
   });
 
+  /* ─────────────────────────────────────────────────────
+     15. BADGE CANVAS EFFECTS
+         - Data Science : partikel galaxy (bintang + nebula)
+         - Electro       : petir zig-zag acak
+  ───────────────────────────────────────────────────── */
+  document.querySelectorAll(".badge-canvas").forEach((canvas) => {
+    const type = canvas.dataset.type;
+    const badge = canvas.parentElement;
+
+    // Resize canvas agar presisi
+    function resizeCanvas() {
+      canvas.width  = badge.offsetWidth;
+      canvas.height = badge.offsetHeight;
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    const ctx = canvas.getContext("2d");
+    let raf;
+
+    /* ── DATA SCIENCE — Galaxy Particles ── */
+    if (type === "ds") {
+      const STARS = 38;
+      const stars = Array.from({ length: STARS }, () => ({
+        x:     Math.random() * canvas.width,
+        y:     Math.random() * canvas.height,
+        r:     Math.random() * 1.5 + 0.4,
+        speed: Math.random() * 0.3 + 0.08,
+        alpha: Math.random(),
+        dAlpha: (Math.random() * 0.02 + 0.006) * (Math.random() < 0.5 ? 1 : -1),
+        hue:   Math.floor(Math.random() * 80 + 220), // biru-ungu
+      }));
+
+      // Beberapa partikel bergerak melayang
+      const floaters = Array.from({ length: 10 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r: Math.random() * 2.2 + 0.8,
+        hue: Math.floor(Math.random() * 80 + 260),
+        alpha: Math.random() * 0.7 + 0.3,
+      }));
+
+      function drawDS() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Nebula background glow
+        const grad = ctx.createRadialGradient(
+          canvas.width * 0.5, canvas.height * 0.5, 0,
+          canvas.width * 0.5, canvas.height * 0.5, canvas.width * 0.55
+        );
+        grad.addColorStop(0, "rgba(120,60,255,0.10)");
+        grad.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Bintang berkelip
+        stars.forEach((s) => {
+          s.alpha += s.dAlpha;
+          if (s.alpha <= 0 || s.alpha >= 1) s.dAlpha *= -1;
+          s.alpha = Math.max(0, Math.min(1, s.alpha));
+
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${s.hue}, 90%, 85%, ${s.alpha})`;
+          ctx.fill();
+        });
+
+        // Partikel melayang
+        floaters.forEach((p) => {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < -4) p.x = canvas.width + 4;
+          if (p.x > canvas.width + 4) p.x = -4;
+          if (p.y < -4) p.y = canvas.height + 4;
+          if (p.y > canvas.height + 4) p.y = -4;
+
+          const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 2.5);
+          grd.addColorStop(0, `hsla(${p.hue}, 90%, 80%, ${p.alpha})`);
+          grd.addColorStop(1, "transparent");
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = grd;
+          ctx.fill();
+        });
+
+        raf = requestAnimationFrame(drawDS);
+      }
+      drawDS();
+    }
+
+    /* ── ELECTRO — Lightning Bolts ── */
+    if (type === "electro") {
+      let lightningTimer = 0;
+      let lightningInterval = Math.random() * 40 + 18; // frame antar petir
+      let bolts = [];
+
+      // Buat satu segmen petir zig-zag
+      function makeBolt(x1, y1, x2, y2, depth) {
+        if (depth <= 0) return [{ x1, y1, x2, y2 }];
+        const mx = (x1 + x2) / 2 + (Math.random() - 0.5) * (canvas.height * 0.45);
+        const my = (y1 + y2) / 2 + (Math.random() - 0.5) * 6;
+        return [
+          ...makeBolt(x1, y1, mx, my, depth - 1),
+          ...makeBolt(mx, my, x2, y2, depth - 1),
+        ];
+      }
+
+      // Buat kumpulan petir
+      function spawnLightning() {
+        bolts = [];
+        const count = Math.floor(Math.random() * 2) + 1;
+        for (let i = 0; i < count; i++) {
+          const startX = Math.random() * canvas.width;
+          const segs = makeBolt(startX, 0, startX + (Math.random()-0.5)*20, canvas.height, 3);
+          bolts.push({
+            segs,
+            alpha: 1.0,
+            decay: Math.random() * 0.08 + 0.06,
+            width: Math.random() * 1.2 + 0.5,
+          });
+        }
+      }
+
+      // Partikel percikan
+      const sparks = [];
+      function addSparks() {
+        for (let i = 0; i < 6; i++) {
+          sparks.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 2.5,
+            vy: (Math.random() - 0.5) * 2.5,
+            alpha: 1,
+            r: Math.random() * 1.5 + 0.5,
+          });
+        }
+      }
+
+      function drawElectro() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Spawn petir baru
+        lightningTimer++;
+        if (lightningTimer >= lightningInterval) {
+          lightningTimer = 0;
+          lightningInterval = Math.random() * 50 + 20;
+          spawnLightning();
+          addSparks();
+        }
+
+        // Gambar petir
+        bolts.forEach((bolt, i) => {
+          bolt.alpha -= bolt.decay;
+          if (bolt.alpha <= 0) { bolts.splice(i, 1); return; }
+
+          bolt.segs.forEach((seg) => {
+            // Glow luar
+            ctx.beginPath();
+            ctx.moveTo(seg.x1, seg.y1);
+            ctx.lineTo(seg.x2, seg.y2);
+            ctx.strokeStyle = `rgba(255, 230, 50, ${bolt.alpha * 0.25})`;
+            ctx.lineWidth = bolt.width * 5;
+            ctx.lineCap = "round";
+            ctx.stroke();
+
+            // Core petir
+            ctx.beginPath();
+            ctx.moveTo(seg.x1, seg.y1);
+            ctx.lineTo(seg.x2, seg.y2);
+            ctx.strokeStyle = `rgba(255, 255, 220, ${bolt.alpha})`;
+            ctx.lineWidth = bolt.width;
+            ctx.stroke();
+          });
+        });
+
+        // Percikan
+        sparks.forEach((sp, i) => {
+          sp.x += sp.vx;
+          sp.y += sp.vy;
+          sp.alpha -= 0.04;
+          if (sp.alpha <= 0) { sparks.splice(i, 1); return; }
+
+          ctx.beginPath();
+          ctx.arc(sp.x, sp.y, sp.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 220, 50, ${sp.alpha})`;
+          ctx.fill();
+        });
+
+        raf = requestAnimationFrame(drawElectro);
+      }
+      drawElectro();
+    }
+
+    // Bersihkan animasi saat elemen dihapus
+    const mo = new MutationObserver(() => {
+      if (!document.body.contains(canvas)) {
+        cancelAnimationFrame(raf);
+        mo.disconnect();
+      }
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+  });
+
 }); // ─── end DOMContentLoaded ───
