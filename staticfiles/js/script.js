@@ -2,13 +2,13 @@
    RENO ArD S — PORTFOLIO  |  script.js
    File : static/js/script.js
    Note : Single-page — semua section ada di home.html
-===================================================== */
+   ===================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ─────────────────────────────────────────────────────
+  /* ───────────────────────────────────────────────────
      AMBIL SEMUA ELEMEN YANG DIBUTUHKAN
-  ───────────────────────────────────────────────────── */
+  ─────────────────────────────────────────────────── */
   const nav      = document.getElementById("nav");
   const glare    = document.getElementById("glare");
   const pill     = document.getElementById("active-pill");
@@ -18,22 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const form     = document.querySelector(".contact-form");
   const mainEl   = document.getElementById("main-content");
 
-  /* ─────────────────────────────────────────────────────
+  /* ───────────────────────────────────────────────────
      1. PILL SLIDER
-     FIX: Hitung offset relatif terhadap .nav-items (parent pill),
-     bukan terhadap dokumen / parent lain.
-     Ini memastikan pill selalu sejajar persis dengan tombol aktif.
-  ───────────────────────────────────────────────────── */
+  ─────────────────────────────────────────────────── */
   function movePill(btn, smooth = true) {
     if (!btn || !pill) return;
-
-    const navItems = pill.parentElement; // .nav-items
-    const navItemsRect = navItems.getBoundingClientRect();
-    const btnRect      = btn.getBoundingClientRect();
-
-    // Offset relatif ke container pill (.nav-items)
-    const offsetLeft = btnRect.left - navItemsRect.left;
-
     if (!smooth) {
       pill.style.transition = "none";
     } else {
@@ -42,15 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
         "width     0.5s cubic-bezier(0.34,1.2,0.64,1)," +
         "background 0.5s ease, box-shadow 0.5s ease";
     }
-
-    pill.style.width     = btn.offsetWidth + "px";
-    // FIX: Gabungkan translateY(-50%) + translateX agar vertical center tidak tertimpa
-    pill.style.transform = "translateY(-50%) translateX(" + offsetLeft + "px)";
+    pill.style.width     = btn.offsetWidth  + "px";
+    pill.style.transform = "translateX(" + btn.offsetLeft + "px)";
   }
 
-  /* ─────────────────────────────────────────────────────
+  /* ───────────────────────────────────────────────────
      2. SET ACTIVE BUTTON
-  ───────────────────────────────────────────────────── */
+  ─────────────────────────────────────────────────── */
   function setActive(targetId) {
     navBtns.forEach((btn) => {
       if (btn.dataset.target === targetId) {
@@ -62,18 +49,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ─────────────────────────────────────────────────────
+  /* ───────────────────────────────────────────────────
      3. SMOOTH SCROLL KE SECTION
-  ───────────────────────────────────────────────────── */
+     FIX FINAL: gunakan scrollIntoView() langsung pada
+     elemen target. Ini paling reliable untuk scroll-snap
+     container karena browser sendiri yang handle snap-point.
+     scroll-snap-stop: always tidak menghalangi ini.
+  ─────────────────────────────────────────────────── */
   function scrollTo(id) {
     const target = document.getElementById(id);
     if (!target) return;
     target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  /* ─────────────────────────────────────────────────────
+  /* ───────────────────────────────────────────────────
      4. KLIK NAVBAR → scroll + update pill
-  ───────────────────────────────────────────────────── */
+  ─────────────────────────────────────────────────── */
   navBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       const id = btn.dataset.target;
@@ -82,9 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────
+  /* ───────────────────────────────────────────────────
      5. KLIK TOMBOL data-scroll
-  ───────────────────────────────────────────────────── */
+  ─────────────────────────────────────────────────── */
   document.querySelectorAll("[data-scroll]").forEach((el) => {
     el.addEventListener("click", () => {
       const id = el.dataset.scroll;
@@ -93,9 +84,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────
+  /* ───────────────────────────────────────────────────
      6. INTERSECTION OBSERVER
-  ───────────────────────────────────────────────────── */
+  ─────────────────────────────────────────────────── */
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -112,28 +103,22 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   sections.forEach((sec) => observer.observe(sec));
 
-  /* ─────────────────────────────────────────────────────
+  /* ───────────────────────────────────────────────────
      7. INIT — posisi pill pertama kali (tanpa animasi)
-     FIX: Tunggu satu frame penuh agar layout selesai dirender
-     sebelum menghitung posisi pill, sehingga getBoundingClientRect()
-     mengembalikan nilai yang akurat.
-  ───────────────────────────────────────────────────── */
+  ─────────────────────────────────────────────────── */
   const firstActive = document.querySelector(".nav-btn.active");
   if (firstActive) {
     requestAnimationFrame(() => {
+      movePill(firstActive, false);
       requestAnimationFrame(() => {
-        movePill(firstActive, false);
-        // Restore transition setelah posisi awal di-set
-        requestAnimationFrame(() => {
-          pill.style.transition = "";
-        });
+        pill.style.transition = "";
       });
     });
   }
 
-  /* ─────────────────────────────────────────────────────
+  /* ───────────────────────────────────────────────────
      8. RESIZE — rekalkulasi posisi pill
-  ───────────────────────────────────────────────────── */
+  ─────────────────────────────────────────────────── */
   let resizeTimer;
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
@@ -143,24 +128,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 100);
   });
 
-  /* ─────────────────────────────────────────────────────
+  /* ───────────────────────────────────────────────────
      9. DARK / LIGHT MODE TOGGLE
-  ───────────────────────────────────────────────────── */
+     Fix: pakai "data-theme" bukan "datatheme"
+  ─────────────────────────────────────────────────── */
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
     updateThemeToggleLabel(theme);
     const active = document.querySelector(".nav-btn.active");
-    // Delay sedikit agar layout selesai di-reflow setelah theme change
     if (active) setTimeout(() => movePill(active), 60);
   }
 
   function updateThemeToggleLabel(theme) {
     const toggleLabel = document.getElementById("theme-toggle-label");
     if (!toggleLabel) return;
-    toggleLabel.textContent = theme === "dark" ? "Switch to Light" : "Switch to Dark";
+    if (theme === "dark") {
+      toggleLabel.textContent = "Switch to Light";
+    } else {
+      toggleLabel.textContent = "Switch to Dark";
+    }
   }
 
+  // Terapkan tema tersimpan saat halaman dibuka
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme) {
     applyTheme(savedTheme);
@@ -169,6 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
     applyTheme(prefersDark ? "dark" : "light");
   }
 
+  // Tombol theme banner di hero card — satu-satunya toggle
   const themeBannerBtn = document.getElementById("theme-banner-btn");
   if (themeBannerBtn) {
     themeBannerBtn.addEventListener("click", () => {
@@ -176,14 +167,19 @@ document.addEventListener("DOMContentLoaded", () => {
       applyTheme(current === "dark" ? "light" : "dark");
     });
     themeBannerBtn.addEventListener("mouseenter", () => {
-      updateThemeToggleLabel(document.documentElement.getAttribute("data-theme"));
+      updateThemeToggleLabel(
+        document.documentElement.getAttribute("data-theme")
+      );
     });
   }
 
-  /* ─────────────────────────────────────────────────────
-     10. BACKGROUND COLOR CYCLING — setiap 8 detik
-  ───────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────────────
+     10b. BACKGROUND COLOR CYCLING — setiap 10 detik
+     Ganti pasangan warna blob secara bertahap menggunakan
+     CSS custom property di :root.
+  ─────────────────────────────────────────────────── */
   const PALETTES = [
+    // [blob-1, blob-2, blob-3]
     ["#ff2a5f", "#007aff", "#ff9500"],
     ["#bf5af2", "#30d158", "#ff375f"],
     ["#007aff", "#ffd60a", "#ff6b35"],
@@ -203,15 +199,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   setInterval(cyclePalette, 8000);
 
-  /* ─────────────────────────────────────────────────────
-     11. GLARE EFFECT
-     FIX: Property CSS variable harus pakai "--" prefix ("--x", "--y")
-     bukan "-x" / "-y" yang sebelumnya typo.
-  ───────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────────────
+     10. GLARE EFFECT — FIX: natural fade saat mouse leave
+     Masalah lama: saat mouseleave langsung set --x ke 50%
+     sehingga glare "melompat" ke tengah.
+     Fix baru: saat mouseleave → fade opacity ke 0 dulu via
+     class, lalu reset posisi setelah transisi selesai.
+  ─────────────────────────────────────────────────── */
   if (nav && glare) {
     let glareLeaveTimer = null;
 
     nav.addEventListener("mousemove", (e) => {
+      // Batalkan timer leave kalau user kembali ke nav
       if (glareLeaveTimer) {
         clearTimeout(glareLeaveTimer);
         glareLeaveTimer = null;
@@ -221,23 +220,30 @@ document.addEventListener("DOMContentLoaded", () => {
       const x    = e.clientX - rect.left;
       const y    = e.clientY - rect.top;
 
-      // FIX: "--x" dan "--y" (dengan double dash)
+      // Update posisi glare
       glare.style.setProperty("--x", x + "px");
       glare.style.setProperty("--y", y + "px");
 
+      // Pastikan glare visible
       glare.classList.remove("glare-hidden");
     });
 
     nav.addEventListener("mouseleave", (e) => {
-      const rect  = nav.getBoundingClientRect();
-      const exitX = e.clientX - rect.left;
-      const exitY = e.clientY - rect.top;
+      // Hitung posisi terakhir kursor sebelum benar-benar keluar
+      // untuk menentukan arah "exit" sehingga glare fade secara natural
+      const rect    = nav.getBoundingClientRect();
+      const exitX   = e.clientX - rect.left;
+      const exitY   = e.clientY - rect.top;
 
+      // Set posisi exit sebelum fade agar tidak "lompat ke tengah"
       glare.style.setProperty("--x", exitX + "px");
       glare.style.setProperty("--y", exitY + "px");
 
+      // Fade out glare secara natural
       glare.classList.add("glare-hidden");
 
+      // Setelah animasi fade selesai (300ms), reset posisi ke tengah
+      // tapi tetap tersembunyi — sehingga saat masuk lagi, mulai dari tengah
       glareLeaveTimer = setTimeout(() => {
         glare.style.setProperty("--x", "50%");
         glare.style.setProperty("--y", "50%");
@@ -246,19 +252,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ─────────────────────────────────────────────────────
-     12. PHOTO HOVER EFFECT — 3D tilt & glow
-  ───────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────────────
+     11. PHOTO HOVER EFFECT — 3D tilt & glow
+  ─────────────────────────────────────────────────── */
   const photoRing = document.querySelector(".photo-ring");
   if (photoRing) {
     photoRing.addEventListener("mousemove", (e) => {
-      const rect    = photoRing.getBoundingClientRect();
-      const cx      = rect.left + rect.width  / 2;
-      const cy      = rect.top  + rect.height / 2;
-      const dx      = (e.clientX - cx) / (rect.width  / 2);
-      const dy      = (e.clientY - cy) / (rect.height / 2);
-      const rotateX = -dy * 18;
-      const rotateY =  dx * 18;
+      const rect   = photoRing.getBoundingClientRect();
+      const cx     = rect.left + rect.width  / 2;
+      const cy     = rect.top  + rect.height / 2;
+      const dx     = (e.clientX - cx) / (rect.width  / 2);  // -1 to 1
+      const dy     = (e.clientY - cy) / (rect.height / 2);  // -1 to 1
+      const rotateX = -dy * 18;  // tilt vertical
+      const rotateY =  dx * 18;  // tilt horizontal
 
       photoRing.style.transform =
         `perspective(400px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.10)`;
@@ -270,13 +276,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ─────────────────────────────────────────────────────
-     13. CONTACT FORM — feedback sederhana
-  ───────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────────────
+     12. CONTACT FORM — feedback sederhana
+  ─────────────────────────────────────────────────── */
   if (form && feedback) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-
       const name    = form.querySelector("#name")?.value.trim();
       const email   = form.querySelector("#email")?.value.trim();
       const message = form.querySelector("#message")?.value.trim();
@@ -289,7 +294,6 @@ document.addEventListener("DOMContentLoaded", () => {
         showFeedback("Format email tidak valid.", "error");
         return;
       }
-
       showFeedback("Mengirim...", "");
       setTimeout(() => {
         showFeedback("Pesan terkirim! Terima kasih 🎉", "success");
@@ -308,9 +312,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
-  /* ─────────────────────────────────────────────────────
-     14. SCROLL-REVEAL — fade-in card saat masuk viewport
-  ───────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────────────
+     13. SCROLL-REVEAL — fade-in card saat masuk viewport
+  ─────────────────────────────────────────────────── */
   const revealEls = document.querySelectorAll(".main-card, .section-card");
   const revealObserver = new IntersectionObserver(
     (entries) => {

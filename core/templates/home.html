@@ -1,0 +1,372 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Reno ArD S — Portfolio{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════
+     BACKGROUND BLOB MESH
+════════════════════════════════════════════════════ -->
+<div class="bg-mesh" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     MAIN SCROLL CONTAINER
+════════════════════════════════════════════════════ -->
+<main id="main-content">
+
+  <!-- ─── SECTION: HOME ─── -->
+  <section id="home" class="page-section">
+    <div class="main-card">
+
+      <!-- Gelembung dekorasi -->
+      <div class="bubbles" aria-hidden="true">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+      </div>
+
+      <div class="card-inner">
+
+        <!-- Foto Profil -->
+        <div class="photo-wrap">
+          <div class="photo-ring">
+            <img src="{% static 'images/profile.jpg' %}"
+                 alt="Foto Reno ArD S"
+                 width="148" height="148">
+          </div>
+        </div>
+
+        <!-- Teks Utama -->
+        <div class="card-text">
+          <p class="card-greeting">Ciaoo ✨</p>
+          <h1 class="card-name">Reno ArD S</h1>
+          <p class="card-role">Front-End Web Developer</p>
+          <p class="card-tagline">
+            Crafting beautiful &amp; interactive web experiences with passion.
+          </p>
+        </div>
+
+        <!-- Social Buttons -->
+        <div class="social-row">
+          <a href="https://linkedin.com/in/renoards"
+             class="soc-btn"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="LinkedIn">
+            <!-- LinkedIn icon -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+              <rect x="2" y="9" width="4" height="12"/>
+              <circle cx="4" cy="4" r="2"/>
+            </svg>
+            <span>LinkedIn</span>
+          </a>
+          <a href="https://github.com/renoards"
+             class="soc-btn"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="GitHub">
+            <!-- GitHub icon -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+            </svg>
+            <span>GitHub</span>
+          </a>
+        </div>
+
+        <!-- Divider -->
+        <div class="card-divider"></div>
+
+        <!-- ═══════════════════════════════════════════
+             THEME BANNER BUTTON — iOS-style toggle switch
+             Bulan (🌙) kiri, Matahari (☀️) kanan.
+             Thumb pill geser kiri↔kanan saat diklik.
+        ════════════════════════════════════════════ -->
+        <button id="theme-banner-btn"
+                class="theme-banner-btn"
+                aria-label="Toggle dark / light mode">
+
+          <!-- Shimmer sweep (via ::before di CSS) -->
+
+          <!-- Label kiri -->
+          <span class="theme-banner-label">
+            <span id="theme-toggle-label">Switch to Dark</span>
+          </span>
+
+          <!-- iOS Toggle Switch -->
+          <span class="ios-toggle" aria-hidden="true">
+            <!-- Track -->
+            <span class="ios-track">
+              <!-- Ikon bulan (kiri) -->
+              <span class="ios-icon ios-icon-moon">🌙</span>
+              <!-- Ikon matahari (kanan) -->
+              <span class="ios-icon ios-icon-sun">☀️</span>
+              <!-- Thumb pill yang geser -->
+              <span class="ios-thumb"></span>
+            </span>
+          </span>
+
+        </button>
+
+      </div><!-- /.card-inner -->
+    </div><!-- /.main-card -->
+  </section>
+
+  <!-- ─── SECTION: ABOUT ─── -->
+  <section id="about" class="page-section">
+    <div class="section-card">
+
+      <div class="section-header">
+        <span class="section-label">About</span>
+        <h2 class="section-title">Hi, I'm Reno! 👋</h2>
+        <p class="section-sub">
+          Front-end developer berbasis di Indonesia, suka bikin web yang cantik dan interaktif.
+        </p>
+      </div>
+
+      <div class="about-bio">
+        <p>
+          Saya adalah seorang <strong>front-end web developer</strong> yang passionate dalam
+          menciptakan pengalaman web yang indah dan interaktif. Saya percaya bahwa desain yang baik
+          bukan hanya soal estetika, tapi juga soal fungsi dan pengalaman pengguna.
+        </p>
+        <p>
+          Saat ini saya fokus memperdalam kemampuan di bidang <strong>modern web development</strong>,
+          mulai dari membangun UI yang responsif hingga mengintegrasikan back-end dengan Django.
+        </p>
+      </div>
+
+      <!-- Skills Grid -->
+      <div class="skill-grid">
+
+        <div class="skill-card">
+          <div class="skill-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"/>
+              <polyline points="8 6 2 12 8 18"/>
+            </svg>
+          </div>
+          <h3>HTML &amp; CSS</h3>
+          <p>Semantic HTML5, CSS3, Flexbox, Grid, Animasi, Glassmorphism</p>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <h3>JavaScript</h3>
+          <p>ES6+, DOM Manipulation, Fetch API, animasi interaktif</p>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <h3>Django</h3>
+          <p>Python, Django Framework, Template Engine, MVT Pattern</p>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+            </svg>
+          </div>
+          <h3>Design</h3>
+          <p>Figma, UI/UX Principles, Responsive Design, Glassmorphism</p>
+        </div>
+
+      </div><!-- /.skill-grid -->
+
+      <button class="back-btn" data-scroll="home" aria-label="Kembali ke atas">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Kembali ke Atas
+      </button>
+
+    </div><!-- /.section-card -->
+  </section>
+
+  <!-- ─── SECTION: CONTACT ─── -->
+  <section id="contact" class="page-section">
+    <div class="section-card">
+
+      <div class="section-header">
+        <span class="section-label">Contact</span>
+        <h2 class="section-title">Let's Connect 🚀</h2>
+        <p class="section-sub">
+          Tertarik untuk berkolaborasi? Jangan ragu untuk menghubungi saya!
+        </p>
+      </div>
+
+      <!-- Info pills -->
+      <div class="contact-info">
+        <a href="mailto:reno@email.com" class="info-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          reno@email.com
+        </a>
+        <a href="https://github.com/renoards" target="_blank" rel="noopener noreferrer" class="info-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+          github.com/renoards
+        </a>
+        <a href="https://linkedin.com/in/renoards" target="_blank" rel="noopener noreferrer" class="info-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+            <rect x="2" y="9" width="4" height="12"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+          LinkedIn
+        </a>
+      </div>
+
+      <!-- Contact Form -->
+      <form class="contact-form" action="#" method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-row two-col">
+          <div class="form-group">
+            <label for="name">Nama *</label>
+            <input type="text" id="name" name="name"
+                   placeholder="Nama kamu" autocomplete="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email"
+                   placeholder="email@kamu.com" autocomplete="email" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="subject">Subjek</label>
+          <input type="text" id="subject" name="subject"
+                 placeholder="Perihal pesan kamu">
+        </div>
+        <div class="form-group">
+          <label for="message">Pesan *</label>
+          <textarea id="message" name="message" rows="4"
+                    placeholder="Tulis pesanmu di sini..." required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+          Kirim Pesan
+        </button>
+        <p id="form-feedback" class="form-feedback" role="status" aria-live="polite"></p>
+      </form>
+
+      <button class="back-btn" data-scroll="home" aria-label="Kembali ke atas">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Kembali ke Atas
+      </button>
+
+    </div><!-- /.section-card -->
+  </section>
+
+</main><!-- /#main-content -->
+
+<!-- ═══════════════════════════════════════════════════
+     NAVBAR — LIQUID GLASS (BOTTOM CENTER)
+════════════════════════════════════════════════════ -->
+<nav class="navbar-wrapper" role="navigation" aria-label="Main navigation">
+  <div id="nav" class="liquid-nav">
+
+    <!-- Glare container -->
+    <div class="liquid-glare-container" aria-hidden="true">
+      <div id="glare" class="liquid-glare"></div>
+    </div>
+
+    <!-- Active pill -->
+    <div id="active-pill" class="active-pill" aria-hidden="true"></div>
+
+    <!-- Nav buttons -->
+    <div class="nav-items">
+      <button class="nav-btn active" data-target="home" aria-label="Home">
+        <span class="btn-content">
+          <!-- Home icon -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span>Home</span>
+        </span>
+      </button>
+
+      <button class="nav-btn" data-target="about" aria-label="About">
+        <span class="btn-content">
+          <!-- User icon -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>About</span>
+        </span>
+      </button>
+
+      <button class="nav-btn" data-target="contact" aria-label="Contact">
+        <span class="btn-content">
+          <!-- Mail icon -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          <span>Contact</span>
+        </span>
+      </button>
+    </div>
+
+  </div><!-- /.liquid-nav -->
+</nav>
+
+{% endblock %}

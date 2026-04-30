@@ -1,8 +1,7 @@
 /* =====================================================
    RENO ArD S — PORTFOLIO STYLESHEET
    File: static/css/style.css
-   FIX: Nav pill sinkronisasi & vertical centering
-===================================================== */
+   ===================================================== */
 
 /* ─────────────────────────────────────────
    1. CSS VARIABLES
@@ -55,6 +54,7 @@
   --input-border: rgba(255, 255, 255, 0.45);
   --input-focus:  rgba(0, 122, 255, 0.40);
 
+  /* Theme toggle banner */
   --theme-banner-bg:       rgba(255, 255, 255, 0.22);
   --theme-banner-border:   rgba(255, 255, 255, 0.50);
   --theme-banner-hover-bg: rgba(255, 255, 255, 0.42);
@@ -109,6 +109,7 @@
   --input-border: rgba(255, 255, 255, 0.16);
   --input-focus:  rgba(10, 132, 255, 0.45);
 
+  /* Theme toggle banner dark */
   --theme-banner-bg:       rgba(255, 255, 255, 0.07);
   --theme-banner-border:   rgba(255, 255, 255, 0.16);
   --theme-banner-hover-bg: rgba(255, 255, 255, 0.15);
@@ -150,6 +151,7 @@ body {
   opacity: var(--blob-opacity);
   animation: float 20s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
   will-change: transform;
+  /* Transisi warna yang mulus saat background cycling (JS setProperty) */
   transition: background-color 2.5s ease, opacity 0.8s ease;
 }
 .blob-1 { width: 55vw; height: 55vw; top: -15%;   left: -10%;  background: var(--blob-1); animation-delay: 0s;   }
@@ -176,7 +178,6 @@ main {
   scrollbar-width: none;
 }
 main::-webkit-scrollbar { display: none; }
-
 .page-section {
   height: 100vh;
   scroll-snap-align: start;
@@ -198,18 +199,15 @@ main::-webkit-scrollbar { display: none; }
   z-index: 1000;
   animation: fadeInUp 0.8s cubic-bezier(0.34, 1.2, 0.64, 1) 0.3s both;
 }
-
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateX(-50%) translateY(20px); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0);    }
 }
-
 .liquid-nav {
   position: relative;
   display: flex;
   align-items: center;
-  /* FIX: padding seragam di semua sisi agar pill bisa center vertikal */
-  padding: 6px;
+  padding: 8px;
   border-radius: 99px;
   background: var(--glass-bg);
   backdrop-filter: blur(50px) saturate(200%);
@@ -222,7 +220,6 @@ main::-webkit-scrollbar { display: none; }
     inset 0 0 0 1px var(--glass-border);
   transition: all 0.5s ease;
 }
-
 /* Aqua reflection */
 .liquid-nav::before {
   content: '';
@@ -235,7 +232,6 @@ main::-webkit-scrollbar { display: none; }
   z-index: 6;
   transition: background 0.5s ease;
 }
-
 /* Glare container */
 .liquid-glare-container {
   position: absolute;
@@ -245,11 +241,12 @@ main::-webkit-scrollbar { display: none; }
   pointer-events: none;
   z-index: 5;
 }
-
+/* ─── FIX GLARE: natural fade menggunakan class .glare-hidden ─── */
 .liquid-glare {
   position: absolute;
   inset: 0;
   opacity: 0;
+  /* Transisi opacity lebih panjang agar fade out natural, bukan kaku */
   transition: opacity 0.35s ease;
   background: radial-gradient(
     circle 90px at var(--x, 50%) var(--y, 50%),
@@ -258,37 +255,27 @@ main::-webkit-scrollbar { display: none; }
   );
   mix-blend-mode: overlay;
 }
-
+/* Saat mouse di atas nav: tampilkan glare */
 .liquid-nav:hover .liquid-glare:not(.glare-hidden) {
   opacity: 1;
 }
-
+/* Saat mouse meninggalkan nav: glare fade out perlahan */
 .liquid-glare.glare-hidden {
   opacity: 0;
+  /* posisi tetap, hanya opacity yang berubah → tidak ada "lompat ke tengah" */
 }
 
 /* ─── Nav items & pill ─── */
 .nav-items {
   position: relative;
   display: flex;
-  align-items: center;
   gap: 4px;
   z-index: 3;
 }
-
-/*
- * FIX PILL SINKRONISASI:
- * - Hapus "top: 0" dan ganti dengan top/transform untuk center vertikal.
- * - Height mengikuti nav-btn (44px) agar pill selalu satu ukuran.
- * - transform di-set via JS (translateX) — pill tidak perlu left: 0 di CSS.
- */
 .active-pill {
   position: absolute;
-  /* top 50% — translateY(-50%) digabung di JS agar tidak konflik */
-  top: 50%;
-  left: 0;
+  top: 0; left: 0;
   height: 44px;
-  transform: translateY(-50%) translateX(0px); /* initial, JS akan update */
   background: var(--pill-bg);
   border-radius: 99px;
   box-shadow: var(--pill-shadow);
@@ -299,9 +286,7 @@ main::-webkit-scrollbar { display: none; }
     box-shadow  0.5s ease;
   will-change: transform, width;
   z-index: 1;
-  pointer-events: none;
 }
-
 .nav-btn {
   position: relative;
   background: transparent;
@@ -318,10 +303,7 @@ main::-webkit-scrollbar { display: none; }
   transition: color 0.3s ease;
   outline: none;
   z-index: 2;
-  /* Pastikan tidak ada transform sendiri yang menggeser posisi */
-  flex-shrink: 0;
 }
-
 .btn-content {
   display: flex;
   align-items: center;
@@ -329,7 +311,6 @@ main::-webkit-scrollbar { display: none; }
   pointer-events: none;
   transition: transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
 }
-
 .nav-btn:active .btn-content { transform: scale(0.90); }
 .nav-btn.active, .nav-btn:hover { color: var(--icon-active); }
 
@@ -340,10 +321,10 @@ main::-webkit-scrollbar { display: none; }
   background: var(--divider);
   margin: 0 4px;
   flex-shrink: 0;
-  align-self: center;
   z-index: 3;
   transition: background 0.5s ease;
 }
+
 
 /* ─────────────────────────────────────────
    6. HERO CARD — MAIN GLASSMORPHISM
@@ -365,7 +346,6 @@ main::-webkit-scrollbar { display: none; }
   overflow: hidden;
   animation: fadeUp 0.9s cubic-bezier(0.34, 1.2, 0.64, 1) both;
 }
-
 .main-card::before {
   content: '';
   position: absolute;
@@ -376,26 +356,24 @@ main::-webkit-scrollbar { display: none; }
   pointer-events: none;
   z-index: 1;
 }
-
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(40px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 .card-inner {
   position: relative;
   z-index: 2;
   padding: 40px 40px 36px;
 }
 
+/* ─── FOTO: Diperbesar + efek 3D tilt hover "mahal" ─── */
 .photo-wrap {
   display: flex;
   justify-content: center;
   margin-bottom: 22px;
 }
-
 .photo-ring {
-  width: 148px;
+  width: 148px;   /* diperbesar dari 116px */
   height: 148px;
   border-radius: 50%;
   padding: 3px;
@@ -410,7 +388,7 @@ main::-webkit-scrollbar { display: none; }
   transform-style: preserve-3d;
   will-change: transform;
 }
-
+/* Glow ring muncul saat hover */
 .photo-ring:hover {
   box-shadow:
     0 12px 48px rgba(0,0,0,0.28),
@@ -418,19 +396,18 @@ main::-webkit-scrollbar { display: none; }
     0 0 32px 8px var(--accent-glow),
     inset 0 1px 2px rgba(255,255,255,0.80);
 }
-
 .photo-ring img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
   display: block;
-  pointer-events: none;
+  pointer-events: none;   /* biar tilt smooth, event tetap di .photo-ring */
 }
 
+/* Text */
 .card-text     { text-align: center; margin-bottom: 24px; }
 .card-greeting { font-size: 14px; color: var(--text-sec); margin-bottom: 6px; letter-spacing: 0.3px; }
-
 .card-name {
   font-family: 'Syne', sans-serif;
   font-size: 30px;
@@ -439,17 +416,16 @@ main::-webkit-scrollbar { display: none; }
   letter-spacing: 0.8px;
   margin-bottom: 4px;
 }
-
 .card-role    { font-size: 14px; font-weight: 500; color: var(--accent); margin-bottom: 8px; letter-spacing: 0.2px; }
 .card-tagline { font-size: 13px; color: var(--text-sec); line-height: 1.6; max-width: 320px; margin: 0 auto; }
 
+/* Social buttons */
 .social-row {
   display: flex;
   gap: 12px;
   justify-content: center;
   margin-bottom: 24px;
 }
-
 .soc-btn {
   display: flex;
   align-items: center;
@@ -467,10 +443,10 @@ main::-webkit-scrollbar { display: none; }
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
-
 .soc-btn:hover { background: var(--btn-glass-hover); transform: translateY(-2px); }
 .soc-btn svg   { flex-shrink: 0; opacity: 0.80; }
 
+/* Card divider */
 .card-divider {
   height: 0.5px;
   background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.50) 50%, transparent 100%);
@@ -479,6 +455,8 @@ main::-webkit-scrollbar { display: none; }
 
 /* ─────────────────────────────────────────
    THEME BANNER BUTTON
+   Menggantikan tombol "Tentang Saya" di hero card.
+   Wide, penuh, dengan efek transisi mode terang/gelap.
 ───────────────────────────────────────── */
 .theme-banner-btn {
   display: flex;
@@ -507,31 +485,43 @@ main::-webkit-scrollbar { display: none; }
   overflow: hidden;
 }
 
+/* Shimmer sweep saat hover */
 .theme-banner-btn::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.18) 50%, transparent 70%);
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 70%
+  );
   transform: translateX(-100%);
   transition: transform 0.55s ease;
   pointer-events: none;
 }
+.theme-banner-btn:hover::before {
+  transform: translateX(100%);
+}
 
-.theme-banner-btn:hover::before { transform: translateX(100%); }
 .theme-banner-btn:hover {
   background: var(--theme-banner-hover-bg);
   transform: translateY(-2px);
   box-shadow: 0 8px 28px var(--theme-banner-glow);
   border-color: var(--accent);
 }
-.theme-banner-btn:active { transform: scale(0.97); }
+.theme-banner-btn:active {
+  transform: scale(0.97);
+}
 
+/* Ikon di dalam banner — hapus, diganti ios-toggle */
+
+/* Label teks di dalam banner */
 .theme-banner-label {
   flex: 1;
   text-align: left;
   pointer-events: none;
 }
-
 .theme-banner-sublabel {
   display: block;
   font-size: 11px;
@@ -541,30 +531,37 @@ main::-webkit-scrollbar { display: none; }
   margin-top: 2px;
   transition: color 0.3s ease;
 }
-
-.theme-banner-btn:hover .theme-banner-sublabel { color: var(--accent); }
+.theme-banner-btn:hover .theme-banner-sublabel {
+  color: var(--accent);
+}
 
 /* ─── iOS-STYLE TOGGLE SWITCH ─── */
+/* Wrapper luar */
 .ios-toggle {
   flex-shrink: 0;
   pointer-events: none;
 }
 
+/* Track — background pill yang berubah warna */
 .ios-track {
   position: relative;
   display: inline-flex;
   align-items: center;
-  width: 80px;
-  height: 40px;
+  width: 72px;
+  height: 36px;
   border-radius: 99px;
+  /* Light mode: warna terang/kuning */
   background: linear-gradient(135deg, #ffe066 0%, #ffb347 100%);
   box-shadow:
     inset 0 2px 6px rgba(0,0,0,0.18),
     inset 0 -1px 2px rgba(255,255,255,0.35),
     0 2px 8px rgba(255,180,50,0.35);
-  transition: background 0.55s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.55s ease;
+  transition:
+    background  0.55s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow  0.55s ease;
 }
 
+/* Dark mode: track berubah ke ungu-gelap */
 [data-theme="dark"] .ios-track {
   background: linear-gradient(135deg, #2c2c3e 0%, #1a1a2e 100%);
   box-shadow:
@@ -573,45 +570,45 @@ main::-webkit-scrollbar { display: none; }
     0 2px 8px rgba(100,60,200,0.35);
 }
 
+/* Ikon bulan & matahari di dalam track */
 .ios-icon {
   position: absolute;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1;
   pointer-events: none;
   transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
   user-select: none;
-  top: 50%;
-  transform: translateY(-50%);
 }
-
+/* Bulan — di sisi kiri track */
 .ios-icon-moon {
-  left: 10px;
-  opacity: 0;
-  transform: translateY(-50%) scale(0.6) rotate(-30deg);
+  left: 8px;
+  opacity: 0;       /* tersembunyi di light mode */
+  transform: scale(0.6) rotate(-30deg);
 }
-
+/* Matahari — di sisi kanan track */
 .ios-icon-sun {
-  right: 10px;
-  opacity: 1;
-  transform: translateY(-50%) scale(1) rotate(0deg);
+  right: 8px;
+  opacity: 1;       /* terlihat di light mode */
+  transform: scale(1) rotate(0deg);
 }
 
+/* Dark mode: bulan muncul, matahari hilang */
 [data-theme="dark"] .ios-icon-moon {
   opacity: 1;
-  transform: translateY(-50%) scale(1) rotate(0deg);
+  transform: scale(1) rotate(0deg);
 }
-
 [data-theme="dark"] .ios-icon-sun {
   opacity: 0;
-  transform: translateY(-50%) scale(0.6) rotate(30deg);
+  transform: scale(0.6) rotate(30deg);
 }
 
+/* Thumb — pill putih yang geser */
 .ios-thumb {
   position: absolute;
   top: 4px;
-  left: 4px;
-  width: 32px;
-  height: 32px;
+  left: 4px;          /* posisi kiri = light mode */
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: #ffffff;
   box-shadow:
@@ -626,8 +623,9 @@ main::-webkit-scrollbar { display: none; }
   z-index: 2;
 }
 
+/* Dark mode: thumb geser ke kanan */
 [data-theme="dark"] .ios-thumb {
-  transform: translateX(40px);
+  transform: translateX(36px);   /* 72px track − 28px thumb − 4px×2 padding = 36px */
   background: #e0d0ff;
   box-shadow:
     0 3px 10px rgba(0,0,0,0.45),
@@ -635,16 +633,21 @@ main::-webkit-scrollbar { display: none; }
     inset 0 1px 2px rgba(255,255,255,0.50);
 }
 
-.theme-banner-btn:active .ios-thumb { transform: scaleX(1.15) translateX(0px); }
-[data-theme="dark"] .theme-banner-btn:active .ios-thumb { transform: scaleX(1.15) translateX(34px); }
+/* Tombol ditekan: thumb sedikit melebar (squish effect) */
+.theme-banner-btn:active .ios-thumb {
+  transform: scaleX(1.15) translateX(0px);
+}
+[data-theme="dark"] .theme-banner-btn:active .ios-thumb {
+  transform: scaleX(1.15) translateX(31px);
+}
 
+/* Hover: track sedikit glow */
 .theme-banner-btn:hover .ios-track {
   box-shadow:
     inset 0 2px 6px rgba(0,0,0,0.18),
     inset 0 -1px 2px rgba(255,255,255,0.35),
     0 0 18px 4px rgba(255,200,50,0.45);
 }
-
 [data-theme="dark"] .theme-banner-btn:hover .ios-track {
   box-shadow:
     inset 0 2px 6px rgba(0,0,0,0.55),
@@ -652,6 +655,9 @@ main::-webkit-scrollbar { display: none; }
     0 0 18px 4px rgba(140,80,255,0.50);
 }
 
+
+
+/* Gelembung dekorasi */
 .bubbles {
   position: absolute;
   inset: 0;
@@ -660,19 +666,16 @@ main::-webkit-scrollbar { display: none; }
   overflow: hidden;
   border-radius: 28px;
 }
-
 .bubble {
   position: absolute;
   border-radius: 50%;
   background: rgba(255,255,255,0.14);
   animation: rise 9s infinite;
 }
-
 .bubble:nth-child(1) { width: 14px; height: 14px; left: 12%; bottom: -20px; animation-delay: 0s;   animation-duration: 10s; }
 .bubble:nth-child(2) { width: 9px;  height: 9px;  left: 34%; bottom: -20px; animation-delay: 2.5s; animation-duration: 8s;  }
 .bubble:nth-child(3) { width: 18px; height: 18px; left: 62%; bottom: -20px; animation-delay: 5s;   animation-duration: 12s; }
 .bubble:nth-child(4) { width: 7px;  height: 7px;  left: 82%; bottom: -20px; animation-delay: 1.5s; animation-duration: 9s;  }
-
 @keyframes rise {
   0%   { transform: translateY(0)      scale(1);   opacity: 0.6; }
   100% { transform: translateY(-500px) scale(0.3); opacity: 0;   }
@@ -698,11 +701,8 @@ main::-webkit-scrollbar { display: none; }
   padding: 40px 48px 40px;
   animation: fadeUp 0.9s cubic-bezier(0.34, 1.2, 0.64, 1) both;
 }
-
 .section-card::-webkit-scrollbar { display: none; }
-
 .section-header { margin-bottom: 32px; }
-
 .section-label {
   display: inline-block;
   font-size: 11px;
@@ -716,7 +716,6 @@ main::-webkit-scrollbar { display: none; }
   border-radius: 99px;
   margin-bottom: 14px;
 }
-
 .section-title {
   font-family: 'Syne', sans-serif;
   font-size: 34px;
@@ -726,7 +725,6 @@ main::-webkit-scrollbar { display: none; }
   margin-bottom: 10px;
   line-height: 1.2;
 }
-
 .section-sub { font-size: 15px; color: var(--text-sec); line-height: 1.65; max-width: 480px; }
 
 /* ─────────────────────────────────────────
@@ -735,14 +733,12 @@ main::-webkit-scrollbar { display: none; }
 .about-bio { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
 .about-bio p      { font-size: 15px; color: var(--text-sec); line-height: 1.75; }
 .about-bio strong { color: var(--text-primary); font-weight: 600; }
-
 .skill-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 14px;
   margin-bottom: 32px;
 }
-
 .skill-card {
   background: var(--skill-bg);
   border: 0.5px solid var(--skill-border);
@@ -752,9 +748,7 @@ main::-webkit-scrollbar { display: none; }
   -webkit-backdrop-filter: blur(20px);
   transition: transform 0.2s ease, background 0.2s ease;
 }
-
 .skill-card:hover { transform: translateY(-3px); background: var(--btn-glass-hover); }
-
 .skill-icon {
   width: 40px; height: 40px;
   border-radius: 12px;
@@ -766,10 +760,10 @@ main::-webkit-scrollbar { display: none; }
   color: var(--accent);
   margin-bottom: 12px;
 }
-
 .skill-card h3 { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
 .skill-card p  { font-size: 12px; color: var(--text-sec); line-height: 1.55; }
 
+/* Back button */
 .back-btn {
   display: inline-flex;
   align-items: center;
@@ -784,7 +778,6 @@ main::-webkit-scrollbar { display: none; }
   cursor: pointer;
   transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
-
 .back-btn:hover {
   color: var(--text-primary);
   background: var(--btn-glass);
@@ -798,7 +791,6 @@ main::-webkit-scrollbar { display: none; }
 .form-row.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .form-group    { display: flex; flex-direction: column; gap: 6px; }
 .form-group label { font-size: 13px; font-weight: 500; color: var(--text-sec); letter-spacing: 0.2px; }
-
 .form-group input,
 .form-group textarea {
   background: var(--input-bg);
@@ -815,16 +807,13 @@ main::-webkit-scrollbar { display: none; }
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
-
 .form-group input::placeholder,
 .form-group textarea::placeholder { color: var(--text-muted); }
-
 .form-group input:focus,
 .form-group textarea:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--input-focus);
 }
-
 .submit-btn {
   display: flex;
   align-items: center;
@@ -843,16 +832,12 @@ main::-webkit-scrollbar { display: none; }
   letter-spacing: 0.2px;
   transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 .submit-btn:hover  { opacity: 0.88; transform: translateY(-2px); box-shadow: 0 8px 24px var(--accent-glow); }
 .submit-btn:active { transform: scale(0.97); }
-
 .form-feedback { font-size: 13px; text-align: center; min-height: 20px; transition: color 0.3s ease; }
 .form-feedback.success { color: #30d158; }
 .form-feedback.error   { color: #ff453a; }
-
 .contact-info { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
-
 .info-pill {
   display: flex;
   align-items: center;
@@ -866,7 +851,6 @@ main::-webkit-scrollbar { display: none; }
   font-size: 13px;
   transition: background 0.2s ease;
 }
-
 .info-pill:hover { background: var(--btn-glass-hover); }
 
 /* ─────────────────────────────────────────
