@@ -1,372 +1,297 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Reno ArD S — Portfolio{% endblock %}
 
 {% block content %}
 
-<!-- ═══════════════════════════════════════════════════
+<!-- ═══════════════════════════════════════════
      BACKGROUND BLOB MESH
-════════════════════════════════════════════════════ -->
+═══════════════════════════════════════════ -->
 <div class="bg-mesh" aria-hidden="true">
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
+<!-- ═══════════════════════════════════════════
      MAIN SCROLL CONTAINER
-════════════════════════════════════════════════════ -->
+═══════════════════════════════════════════ -->
 <main id="main-content">
 
-  <!-- ─── SECTION: HOME ─── -->
-  <section id="home" class="page-section">
-    <div class="main-card">
-
-      <!-- Gelembung dekorasi -->
+  <!-- ─────────────────────────────
+       SECTION 1 — HERO
+  ───────────────────────────────── -->
+  <section class="page-section" id="home">
+    <article class="main-card" role="main">
       <div class="bubbles" aria-hidden="true">
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
+        <span class="bubble"></span>
+        <span class="bubble"></span>
+        <span class="bubble"></span>
+        <span class="bubble"></span>
       </div>
 
       <div class="card-inner">
 
-        <!-- Foto Profil -->
+        <!-- Foto -->
         <div class="photo-wrap">
           <div class="photo-ring">
-            <img src="{% static 'images/profile.jpg' %}"
-                 alt="Foto Reno ArD S"
-                 width="148" height="148">
+            <img src="{% static 'img/foto.jpg' %}" alt="Foto Reno ArD S" />
           </div>
         </div>
 
-        <!-- Teks Utama -->
+        <!-- Teks -->
         <div class="card-text">
           <p class="card-greeting">Ciaoo ✨</p>
           <h1 class="card-name">Reno ArD S</h1>
           <p class="card-role">Front-End Web Developer</p>
-          <p class="card-tagline">
-            Crafting beautiful &amp; interactive web experiences with passion.
-          </p>
+          <p class="card-tagline">Crafting beautiful &amp; interactive web experiences with passion.</p>
         </div>
 
-        <!-- Social Buttons -->
+        <!-- Social -->
         <div class="social-row">
-          <a href="https://linkedin.com/in/renoards"
-             class="soc-btn"
-             target="_blank"
-             rel="noopener noreferrer"
-             aria-label="LinkedIn">
-            <!-- LinkedIn icon -->
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-              <rect x="2" y="9" width="4" height="12"/>
+          <a href="https://linkedin.com/in/renoards" target="_blank" rel="noopener" class="soc-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
               <circle cx="4" cy="4" r="2"/>
             </svg>
-            <span>LinkedIn</span>
+            LinkedIn
           </a>
-          <a href="https://github.com/renoards"
-             class="soc-btn"
-             target="_blank"
-             rel="noopener noreferrer"
-             aria-label="GitHub">
-            <!-- GitHub icon -->
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          <a href="https://github.com/renoards" target="_blank" rel="noopener" class="soc-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/>
             </svg>
-            <span>GitHub</span>
+            GitHub
           </a>
         </div>
 
-        <!-- Divider -->
         <div class="card-divider"></div>
 
-        <!-- ═══════════════════════════════════════════
-             THEME BANNER BUTTON — iOS-style toggle switch
-             Bulan (🌙) kiri, Matahari (☀️) kanan.
-             Thumb pill geser kiri↔kanan saat diklik.
-        ════════════════════════════════════════════ -->
-        <button id="theme-banner-btn"
-                class="theme-banner-btn"
-                aria-label="Toggle dark / light mode">
-
-          <!-- Shimmer sweep (via ::before di CSS) -->
-
-          <!-- Label kiri -->
+        <!-- Theme toggle -->
+        <button class="theme-banner-btn" id="theme-banner-btn" aria-label="Toggle dark/light mode">
           <span class="theme-banner-label">
-            <span id="theme-toggle-label">Switch to Dark</span>
+            <span id="theme-toggle-label">Switch to Light</span>
+            <span class="theme-banner-sublabel">Appearance</span>
           </span>
-
-          <!-- iOS Toggle Switch -->
           <span class="ios-toggle" aria-hidden="true">
-            <!-- Track -->
             <span class="ios-track">
-              <!-- Ikon bulan (kiri) -->
               <span class="ios-icon ios-icon-moon">🌙</span>
-              <!-- Ikon matahari (kanan) -->
               <span class="ios-icon ios-icon-sun">☀️</span>
-              <!-- Thumb pill yang geser -->
               <span class="ios-thumb"></span>
             </span>
           </span>
-
         </button>
 
       </div><!-- /.card-inner -->
-    </div><!-- /.main-card -->
+    </article>
   </section>
 
-  <!-- ─── SECTION: ABOUT ─── -->
-  <section id="about" class="page-section">
+  <!-- ─────────────────────────────
+       SECTION 2 — ABOUT
+  ───────────────────────────────── -->
+  <section class="page-section" id="about">
     <div class="section-card">
 
-      <div class="section-header">
-        <span class="section-label">About</span>
+      <header class="section-header">
+        <span class="section-label">About Me</span>
         <h2 class="section-title">Hi, I'm Reno! 👋</h2>
-        <p class="section-sub">
-          Front-end developer berbasis di Indonesia, suka bikin web yang cantik dan interaktif.
-        </p>
-      </div>
+        <p class="section-sub">Front-end developer berbasis di Indonesia, suka bikin web yang cantik dan interaktif.</p>
+      </header>
 
       <div class="about-bio">
-        <p>
-          Saya adalah seorang <strong>front-end web developer</strong> yang passionate dalam
-          menciptakan pengalaman web yang indah dan interaktif. Saya percaya bahwa desain yang baik
-          bukan hanya soal estetika, tapi juga soal fungsi dan pengalaman pengguna.
-        </p>
-        <p>
-          Saat ini saya fokus memperdalam kemampuan di bidang <strong>modern web development</strong>,
-          mulai dari membangun UI yang responsif hingga mengintegrasikan back-end dengan Django.
-        </p>
+        <p>Saya adalah seorang front-end web developer yang <strong>passionate</strong> dalam menciptakan pengalaman web yang indah dan interaktif. Saya percaya bahwa desain yang baik bukan hanya soal estetika, tapi juga soal fungsi dan pengalaman pengguna.</p>
+        <p>Saat ini saya fokus memperdalam kemampuan di bidang <strong>modern web development</strong>, mulai dari membangun UI yang responsif hingga mengintegrasikan back-end dengan Django.</p>
       </div>
 
-      <!-- Skills Grid -->
       <div class="skill-grid">
-
         <div class="skill-card">
           <div class="skill-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="16 18 22 12 16 6"/>
-              <polyline points="8 6 2 12 8 18"/>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
             </svg>
           </div>
           <h3>HTML &amp; CSS</h3>
           <p>Semantic HTML5, CSS3, Flexbox, Grid, Animasi, Glassmorphism</p>
         </div>
-
         <div class="skill-card">
           <div class="skill-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="2" y1="12" x2="22" y2="12"/>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
             </svg>
           </div>
           <h3>JavaScript</h3>
           <p>ES6+, DOM Manipulation, Fetch API, animasi interaktif</p>
         </div>
-
         <div class="skill-card">
           <div class="skill-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-              <line x1="8" y1="21" x2="16" y2="21"/>
-              <line x1="12" y1="17" x2="12" y2="21"/>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
             </svg>
           </div>
           <h3>Django</h3>
           <p>Python, Django Framework, Template Engine, MVT Pattern</p>
         </div>
-
         <div class="skill-card">
           <div class="skill-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
             </svg>
           </div>
           <h3>Design</h3>
           <p>Figma, UI/UX Principles, Responsive Design, Glassmorphism</p>
         </div>
+      </div>
 
-      </div><!-- /.skill-grid -->
-
-      <button class="back-btn" data-scroll="home" aria-label="Kembali ke atas">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"/>
+      <button class="back-btn" data-scroll="home">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
         </svg>
-        Kembali ke Atas
+        Back to Home
       </button>
 
-    </div><!-- /.section-card -->
+    </div>
   </section>
 
-  <!-- ─── SECTION: CONTACT ─── -->
-  <section id="contact" class="page-section">
-    <div class="section-card">
+  <!-- ─────────────────────────────
+       SECTION 3 — CONTACT (KTP STYLE)
+  ───────────────────────────────── -->
+  <section class="page-section" id="contact">
+    <div class="section-card ktp-card">
 
-      <div class="section-header">
+      <!-- ── Header kecil ── -->
+      <header class="section-header ktp-header">
         <span class="section-label">Contact</span>
-        <h2 class="section-title">Let's Connect 🚀</h2>
-        <p class="section-sub">
-          Tertarik untuk berkolaborasi? Jangan ragu untuk menghubungi saya!
-        </p>
-      </div>
+        <h2 class="section-title">Let's Connect 🤝</h2>
+      </header>
 
-      <!-- Info pills -->
-      <div class="contact-info">
-        <a href="mailto:reno@email.com" class="info-pill">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-          reno@email.com
-        </a>
-        <a href="https://github.com/renoards" target="_blank" rel="noopener noreferrer" class="info-pill">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-          </svg>
-          github.com/renoards
-        </a>
-        <a href="https://linkedin.com/in/renoards" target="_blank" rel="noopener noreferrer" class="info-pill">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-            <rect x="2" y="9" width="4" height="12"/>
-            <circle cx="4" cy="4" r="2"/>
-          </svg>
-          LinkedIn
-        </a>
-      </div>
+      <!-- ── KTP Body: kiri = info, kanan = foto ── -->
+      <div class="ktp-body">
 
-      <!-- Contact Form -->
-      <form class="contact-form" action="#" method="post" novalidate>
-        {% csrf_token %}
-        <div class="form-row two-col">
-          <div class="form-group">
-            <label for="name">Nama *</label>
-            <input type="text" id="name" name="name"
-                   placeholder="Nama kamu" autocomplete="name" required>
+        <!-- KIRI — Info -->
+        <div class="ktp-info">
+
+          <div class="ktp-row">
+            <span class="ktp-label">Nama</span>
+            <span class="ktp-value ktp-name">Reno ArD S</span>
           </div>
-          <div class="form-group">
-            <label for="email">Email *</label>
-            <input type="email" id="email" name="email"
-                   placeholder="email@kamu.com" autocomplete="email" required>
+
+          <div class="ktp-divider-line"></div>
+
+          <div class="ktp-row">
+            <span class="ktp-label">Universitas</span>
+            <span class="ktp-value">Nama Universitas Kamu</span>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="subject">Subjek</label>
-          <input type="text" id="subject" name="subject"
-                 placeholder="Perihal pesan kamu">
-        </div>
-        <div class="form-group">
-          <label for="message">Pesan *</label>
-          <textarea id="message" name="message" rows="4"
-                    placeholder="Tulis pesanmu di sini..." required></textarea>
-        </div>
-        <button type="submit" class="submit-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2.2"
-               stroke-linecap="round" stroke-linejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13"/>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-          </svg>
-          Kirim Pesan
-        </button>
-        <p id="form-feedback" class="form-feedback" role="status" aria-live="polite"></p>
-      </form>
 
-      <button class="back-btn" data-scroll="home" aria-label="Kembali ke atas">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"/>
-        </svg>
-        Kembali ke Atas
-      </button>
+          <div class="ktp-divider-line"></div>
 
-    </div><!-- /.section-card -->
+          <div class="ktp-row">
+            <span class="ktp-label">Email</span>
+            <a href="mailto:reno@email.com" class="ktp-value ktp-link">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              reno@email.com
+            </a>
+          </div>
+
+          <div class="ktp-divider-line"></div>
+
+          <div class="ktp-row">
+            <span class="ktp-label">WhatsApp</span>
+            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="ktp-value ktp-link ktp-wa">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              +62 812-3456-7890
+            </a>
+          </div>
+
+          <div class="ktp-divider-line"></div>
+
+          <!-- Social links di bawah info -->
+          <div class="ktp-socials">
+            <a href="https://linkedin.com/in/renoards" target="_blank" rel="noopener" class="ktp-soc-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+                <circle cx="4" cy="4" r="2"/>
+              </svg>
+              LinkedIn
+            </a>
+            <a href="https://github.com/renoards" target="_blank" rel="noopener" class="ktp-soc-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/>
+              </svg>
+              GitHub
+            </a>
+          </div>
+
+        </div><!-- /.ktp-info -->
+
+        <!-- KANAN — Foto profesional -->
+        <div class="ktp-photo-wrap">
+          <div class="ktp-photo-frame">
+            <img src="{% static 'img/foto-profesional.jpg' %}" alt="Foto Profesional Reno" />
+          </div>
+          <p class="ktp-photo-caption">Front-End Developer</p>
+        </div>
+
+      </div><!-- /.ktp-body -->
+
+    </div>
   </section>
 
-</main><!-- /#main-content -->
+</main>
 
-<!-- ═══════════════════════════════════════════════════
-     NAVBAR — LIQUID GLASS (BOTTOM CENTER)
-════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════
+     NAVBAR — BOTTOM CENTER
+═══════════════════════════════════════════ -->
 <nav class="navbar-wrapper" role="navigation" aria-label="Main navigation">
-  <div id="nav" class="liquid-nav">
+  <div class="liquid-nav" id="nav">
 
-    <!-- Glare container -->
     <div class="liquid-glare-container" aria-hidden="true">
-      <div id="glare" class="liquid-glare"></div>
+      <div class="liquid-glare" id="glare"></div>
     </div>
 
-    <!-- Active pill -->
-    <div id="active-pill" class="active-pill" aria-hidden="true"></div>
-
-    <!-- Nav buttons -->
     <div class="nav-items">
+      <div class="active-pill" id="active-pill" aria-hidden="true"></div>
+
       <button class="nav-btn active" data-target="home" aria-label="Home">
         <span class="btn-content">
-          <!-- Home icon -->
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
             <polyline points="9 22 9 12 15 12 15 22"/>
           </svg>
           <span>Home</span>
         </span>
       </button>
 
+      <div class="divider" aria-hidden="true"></div>
+
       <button class="nav-btn" data-target="about" aria-label="About">
         <span class="btn-content">
-          <!-- User icon -->
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
           <span>About</span>
         </span>
       </button>
 
+      <div class="divider" aria-hidden="true"></div>
+
       <button class="nav-btn" data-target="contact" aria-label="Contact">
         <span class="btn-content">
-          <!-- Mail icon -->
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
             <polyline points="22,6 12,13 2,6"/>
           </svg>
           <span>Contact</span>
         </span>
       </button>
-    </div>
 
-  </div><!-- /.liquid-nav -->
+    </div>
+  </div>
 </nav>
 
 {% endblock %}
